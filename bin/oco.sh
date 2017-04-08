@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 PROJECT_HOME="$(cd `dirname "${BASH_SOURCE-$0}"`/..; pwd)"
-source PROJECT_HOME/bin/env.sh
+source $PROJECT_HOME/bin/env.sh
 cd $PROJECT_HOME
 
 pid=`ps -ef | grep name=$PROJECT | grep -v grep | awk '{print $2}'`
-
 start() {
     if [[ $pid ]]; then
         echo "${PROJECT} already started, stop it first!"
         exit 100
     fi
 
-     nohup java $JAVA_OPTS -cp "${PROJECT_HOME}/libs/*:${PROJECT_HOME}/$PROJECT_JAR" $MAIN_CLASS >oco.out &
+     nohup java $JAVA_OPTS -jar $PROJECT_JAR >oco.out &
 
     if [[ $? -eq 0 ]]; then
         echo "${PROJECT} started, pid is $!"
@@ -27,6 +26,7 @@ stop() {
         kill -TERM ${pid}
         # 杀进程是耗时间的，等等吧⊙﹏⊙
         retry=1
+        sleep 1
         while [[ true ]]
         do
             pid=`ps -ef | grep name=$PROJECT | grep -v grep | awk '{print $2}'`

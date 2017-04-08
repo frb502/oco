@@ -9,6 +9,5 @@ fi
 DATE=`date +%F`
 export LOG_FILE=${LOG_DIR}/boot_${DATE}.log
 export PROJECT=oco-`whoami`
-export PROJECT_JAR=adapter_2.11-1.0.jar
-export MAIN_CLASS=com.haizhi.raptor.AdapterMain
+export PROJECT_JAR=oco.jar
 export JAVA_OPTS="-Dname=$PROJECT"
