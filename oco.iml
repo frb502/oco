@@ -25,5 +25,7 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.6" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.6" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe:config:1.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.4.4" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.34" level="project" />
   </component>
 </module>
