@@ -30,11 +30,13 @@ public class RestServer implements LazyLogging{
             " _____  | '_ \\| | | | | | __| '_ ` _ \\ / _` | '_ \\\n" +
             "|_____| | |_) | |_| | | | |_| | | | | | (_| | | | |\n" +
             "        |_.__/ \\__, | |_|\\__|_| |_| |_|\\__,_|_| |_|\n" +
-            "               |___/\n\n" + new Date().toString();
+            "               |___/\n\n";
 
-    private String index ="<!DOCTYPE html> <body style=\"background-color: black;color: greenyellow;\">\n" +
-            "    <pre>"+ serverName +"</pre>\n" +
-            "    </body>";
+    private String index() {
+        return "<!DOCTYPE html> <body style=\"background-color: black;color: greenyellow;\">\n" +
+                "    <pre>" + serverName + new Date().toString() + "</pre>\n" +
+                "    </body>";
+    }
 
     private String hostName;
 
@@ -50,9 +52,8 @@ public class RestServer implements LazyLogging{
         this.hostName = hostName;
         this.port = port;
     }
-    private RestServer(String hostName, int port, String serverName, int maxThreads){
+    private RestServer(String hostName, int port, int maxThreads){
         this(hostName, port);
-        this.serverName = serverName;
         this.maxThreads = maxThreads;
     }
 
@@ -60,8 +61,8 @@ public class RestServer implements LazyLogging{
         return new RestServer(hostName, port);
     }
 
-    public static RestServer createServer(String hostName, int port, String serverName, int maxThreads) {
-        return new RestServer(hostName, port, serverName, maxThreads);
+    public static RestServer createServer(String hostName, int port, int maxThreads) {
+        return new RestServer(hostName, port, maxThreads);
     }
 
     public void setMaxThreads(int maxThreads) {
@@ -110,7 +111,7 @@ public class RestServer implements LazyLogging{
         Servlet servlet = new ApiBase("text/html") {
             @Override
             protected String doService(HttpServletRequest request) {
-                return index;
+                return index();
             }
         };
         ServletHolder holder = new ServletHolder(servlet);
