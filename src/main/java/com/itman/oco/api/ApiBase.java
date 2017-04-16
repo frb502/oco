@@ -1,12 +1,17 @@
 package com.itman.oco.api;
+import com.itman.oco.exception.OcoException;
 import com.itman.oco.json.JSONObject;
 import com.itman.oco.util.LazyLogging;
+import com.oracle.tools.packager.IOUtils;
+import sun.nio.ch.IOUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -19,6 +24,8 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
 
     private String contentType = "text/json";
     private Pattern lineRegexPattern = Pattern.compile("\t|\r|\n");
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
 
     public ApiBase() {}
 
@@ -26,9 +33,35 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
         this.contentType = contentType;
     }
 
-    abstract protected String doService(HttpServletRequest request);
+    protected String getParam(String name) {
+        return request.getParameter(name);
+    }
+
+    protected String getParam(String name, String defaultVal) {
+        String param =  request.getParameter(name);
+        if (null == param) {
+            param = defaultVal;
+        }
+        return param;
+    }
+
+    protected void writeResult(String result) throws IOException {
+        response.getWriter().println(result);
+    }
+
+    protected String getParam(String name, Boolean isRequired) {
+        String param =  request.getParameter(name);
+        if (isRequired && null == param) {
+            throw new OcoException("Missing parameter : "+ name);
+        }
+        return param;
+    }
+
+    abstract protected void doService() throws IOException;
 
     private void doGetOrPost(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
         String requestId = UUID.randomUUID().toString();
         long start = System.currentTimeMillis();
         Boolean isSuccess = true;
@@ -40,7 +73,7 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
             response.setStatus(HttpServletResponse.SC_OK);
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             response.setHeader("Server", "oco");
-            response.getWriter().println(doService(request));
+            doService();
         } catch (Throwable e) {
             errorMsg = e.getMessage();
             isSuccess = false;

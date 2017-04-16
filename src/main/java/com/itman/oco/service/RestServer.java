@@ -12,6 +12,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.Map;
@@ -110,8 +111,8 @@ public class RestServer implements LazyLogging{
     private void initApi(ServletContextHandler contextHandler) {
         Servlet servlet = new ApiBase("text/html") {
             @Override
-            protected String doService(HttpServletRequest request) {
-                return index();
+            protected void doService() throws IOException {
+                writeResult(index());
             }
         };
         ServletHolder holder = new ServletHolder(servlet);
