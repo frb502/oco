@@ -29,7 +29,8 @@ public class AccountManager {
 
     public boolean verifyCode(String accoundId, String code) {
         Account account = accounts.get(accoundId);
-        if (account != null && !account.codeExpire() && account.code.equals(code)) {
+        if (account != null && !account.verifyCode(code)) {
+            account.invalidCode();
             return  true;
         }
         return false;
@@ -79,12 +80,16 @@ public class AccountManager {
             this.createTime = System.currentTimeMillis();
         }
 
-        public boolean codeExpire() {
+        public boolean verifyCode(String code) {
             long time = System.currentTimeMillis() - createTime;
-            if (time > 300000) {
+            if (time > 300000 && this.code != null && code.equals(this.code)) {
                 return true;
             }
             return false;
+        }
+
+        public void invalidCode() {
+            code = null;
         }
     }
 
