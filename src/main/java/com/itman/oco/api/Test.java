@@ -1,5 +1,6 @@
 package com.itman.oco.api;
 
+import com.itman.oco.api.base.JsonBase;
 import com.itman.oco.util.ApiPath;
 
 

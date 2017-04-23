@@ -1,4 +1,5 @@
-package com.itman.oco.api;
+package com.itman.oco.api.base;
+import com.itman.oco.exception.ExceptionCode;
 import com.itman.oco.exception.OcoException;
 import com.itman.oco.json.JSONObject;
 import com.itman.oco.util.LazyLogging;
@@ -48,7 +49,7 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
     protected String getParam(String name, Boolean isRequired) {
         String param =  request.getParameter(name);
         if (isRequired && null == param) {
-            throw new OcoException("Missing parameter : "+ name);
+            throw new OcoException("Missing parameter : "+ name, ExceptionCode.PARAMETER_MISSING);
         }
         return param;
     }
@@ -62,7 +63,7 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
         long start = System.currentTimeMillis();
         Boolean isSuccess = true;
         String errorMsg = null;
-        int statusCode = 0;
+        int statusCode = ExceptionCode.OK;
         try {
             logRequest(request, requestId);
             response.setContentType("%s;charset=utf-8".format(contentType));
@@ -70,18 +71,23 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             response.setHeader("Server", "oco");
             doService();
-        } catch (Throwable e) {
+        } catch (OcoException e) {
             errorMsg = e.getMessage();
             isSuccess = false;
-            statusCode = 1;
+            statusCode =e.getErrorCode();
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            isSuccess = false;
+            statusCode = ExceptionCode.ERROR;
         } finally {
             if (!isSuccess) {
                 String errMsg = request.getRequestURI() + " " + getRequestParam(request) + " " + "error: " + errorMsg;
                 logger.error(errMsg);
                 JSONObject jsonObj = new JSONObject();
                 try {
-                    jsonObj.put("status", Integer.toString(statusCode));
+                    jsonObj.put("status", statusCode);
                     jsonObj.put("msg", errorMsg);
+                    jsonObj.put("result", "");
                     response.getWriter().println(jsonObj.toString());
                 } catch (Exception e) {
                 }

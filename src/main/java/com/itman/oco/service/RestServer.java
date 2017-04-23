@@ -1,6 +1,6 @@
 package com.itman.oco.service;
 
-import com.itman.oco.api.ApiBase;
+import com.itman.oco.api.base.ApiBase;
 import com.itman.oco.util.ApiScan;
 import com.itman.oco.util.LazyLogging;
 import com.itman.oco.util.PidUtils;
@@ -11,7 +11,6 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Date;

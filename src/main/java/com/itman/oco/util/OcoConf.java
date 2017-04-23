@@ -37,4 +37,16 @@ public class OcoConf {
     public static int port = getConf("server.port", 3899);
 
     public static int maxThreads = getConf("server.maxThreads", 100);
+
+    public static String smsIP = getConf("sms.smsIP");
+
+    public static String smsPort = getConf("sms.smsPort");
+
+    public static String accountSid = getConf("sms.accountSid");
+
+    public static String accountToken = getConf("sms.accountToken");
+
+    public static String appId = getConf("sms.appId");
+
+    public static String templateId = getConf("sms.templateId");
 }

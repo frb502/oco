@@ -1,5 +1,6 @@
 package com.itman.test;
 
+import com.itman.oco.dao.UserDao;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,8 +16,8 @@ public class MyBatisTest {
         InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sqlSessionFactory.openSession();
-        CourseMapper mapper = session.getMapper(CourseMapper.class);
-        System.out.println(mapper.selectCourse(1));
+        UserDao dao = session.getMapper(UserDao.class);
+        System.out.println(dao.selectOne("2dacd803f196e29fc9d8b567e237eb99"));
     }
 }
 

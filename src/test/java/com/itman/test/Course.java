@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Created by furongbin on 17/4/8.
  */
 public class Course implements Serializable{
+
     private int id;
 
     public String getCname() {

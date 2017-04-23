@@ -1,7 +1,5 @@
 package com.itman.oco.util;
 
-import com.itman.oco.api.ApiBase;
-
 import javax.servlet.Servlet;
 import java.util.HashMap;
 import java.util.List;

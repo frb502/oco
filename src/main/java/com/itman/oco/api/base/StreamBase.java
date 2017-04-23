@@ -1,4 +1,4 @@
-package com.itman.oco.api;
+package com.itman.oco.api.base;
 
 import java.io.IOException;
 import java.io.InputStream;
