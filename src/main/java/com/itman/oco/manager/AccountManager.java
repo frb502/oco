@@ -82,7 +82,7 @@ public class AccountManager {
 
         public boolean verifyCode(String code) {
             long time = System.currentTimeMillis() - createTime;
-            if (time > 300000 && this.code != null && this.code.equals(code)) {
+            if (time < 300000 && this.code != null && this.code.equals(code)) {
                 return true;
             }
             return false;
