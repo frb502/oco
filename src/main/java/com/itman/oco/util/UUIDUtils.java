@@ -46,6 +46,6 @@ public class UUIDUtils {
     public static void main(String[] args) {
         System.out.println(md5("18516908835"));
         System.out.println(uuid());
-        System.out.println(SmsHelper.send("18516908835", randomCode()));
+        System.out.println(SmsUtils.send("18516908835", randomCode()));
     }
 }

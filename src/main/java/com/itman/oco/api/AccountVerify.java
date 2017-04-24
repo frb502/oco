@@ -9,7 +9,7 @@ import com.itman.oco.json.JSONObject;
 import com.itman.oco.manager.AccountManager;
 import com.itman.oco.model.User;
 import com.itman.oco.util.ApiPath;
-import com.itman.oco.util.SmsHelper;
+import com.itman.oco.util.SmsUtils;
 import com.itman.oco.util.SqlSessionHelper;
 import com.itman.oco.util.UUIDUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -29,14 +29,12 @@ public class AccountVerify extends JsonBase {
             throw new OcoException("account no exits", ExceptionCode.ACCOUNT_NO_EXITS);
         }
         String code = UUIDUtils.randomCode();
-        int status = SmsHelper.send(user.getTelephone(), code);
-        if (status == 0) {
-            AccountManager.Account account = new AccountManager.Account(user, code);
-            OcoEnv.accountManager.addAccount(user.getAccount(), account);
-        }
+        SmsUtils.send(user.getTelephone(), code);
+        AccountManager.Account account = new AccountManager.Account(user, code);
+        OcoEnv.accountManager.addAccount(user.getAccount(), account);
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("status", status);
+            jsonObj.put("status", ExceptionCode.OK);
             jsonObj.put("msg", "");
             jsonObj.put("result", "");
         } catch (Exception e) {
