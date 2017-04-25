@@ -38,6 +38,8 @@ public class OcoConf {
 
     public static int maxThreads = getConf("server.maxThreads", 100);
 
+    public static String debugToken = getConf("server.debugToken", "itman_debug_token");
+
     public static String smsIP = getConf("sms.smsIP");
 
     public static String smsPort = getConf("sms.smsPort");

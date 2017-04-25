@@ -46,6 +46,10 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
         response.getWriter().println(result);
     }
 
+    protected void setHeader(String name, String value) {
+        response.setHeader(name, value);
+    }
+
     protected String getParam(String name, Boolean isRequired) {
         String param =  request.getParameter(name);
         if (isRequired && null == param) {
@@ -81,6 +85,7 @@ abstract public class ApiBase extends HttpServlet implements LazyLogging{
             statusCode = ExceptionCode.ERROR;
         } finally {
             if (!isSuccess) {
+                response.setContentType("%s;charset=utf-8".format("text/json"));
                 String errMsg = request.getRequestURI() + " " + getRequestParam(request) + " " + "error: " + errorMsg;
                 logger.error(errMsg);
                 JSONObject jsonObj = new JSONObject();
