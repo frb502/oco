@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserDao {
 
     @Select("SELECT id, expire_date, user_name, amount, telephone, account " +
-            "FROM user WHERE account = #{account}")
+            "FROM user WHERE account = #{account} and deleted=0")
     @Results({
             @Result(column="expire_date", property="expireDate"),
             @Result(column="user_name", property="userName")
