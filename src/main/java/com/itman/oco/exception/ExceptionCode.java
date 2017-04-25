@@ -6,6 +6,7 @@ package com.itman.oco.exception;
 public class ExceptionCode {
     public final static int OK = 0;  //请求OK
     public final static int ERROR = 1; //请求错误
+    public final static int ARREARAGE = 2; //欠费
     public final static int PARAMETER_MISSING = 3; //参数缺失
     public final static int TOKEN_EXPIRE = 4; // token过期
     public final static int ACCOUNT_NO_EXITS = 5; // 账号不存在

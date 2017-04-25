@@ -10,6 +10,7 @@ import com.itman.oco.util.ApiPath;
 import com.itman.oco.util.UUIDUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by furongbin on 17/4/23.
@@ -32,12 +33,22 @@ public class Login extends JsonBase {
         JSONObject jsonObj = new JSONObject();
         JSONObject result = new JSONObject();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int status = ExceptionCode.OK;
+        Date expireDate = OcoEnv.accountManager.getAccount(accountId).user.getExpireDate();
+        long currentTime = System.currentTimeMillis();
+        long expireTime = expireDate.getTime();
+        String msg = "";
+        if (currentTime >= expireTime) {
+            status = ExceptionCode.ARREARAGE;
+            msg = "account arrearage";
+        }
+        long validTime = Math.min(86400, (expireTime -currentTime)/1000);
         try {
             result.put("token", tokenId);
-            result.put("validTime", 86400);
-            result.put("expireTime", df.format(OcoEnv.accountManager.getAccount(accountId).user.getExpireDate()));
-            jsonObj.put("status", 0);
-            jsonObj.put("msg", "");
+            result.put("validTime", validTime);
+            result.put("expireTime", df.format(expireDate));
+            jsonObj.put("status", status);
+            jsonObj.put("msg", msg);
             jsonObj.put("result", result);
         } catch (Exception e) {
             throw new OcoException("Server Internal Error", ExceptionCode.ERROR);

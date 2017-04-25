@@ -45,6 +45,7 @@ public class UUIDUtils {
 
     public static void main(String[] args) {
         System.out.println(md5("18516908835"));
+        System.out.println(md5("18616515008"));
         System.out.println(uuid());
     }
 }
